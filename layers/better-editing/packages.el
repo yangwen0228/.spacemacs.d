@@ -22,15 +22,14 @@
         number
         whole-line-or-region
         yasnippet-snippets
+        server
         ;; post
         company
-        helm
         helm-swoop
         imenu
         magit
         winum
         undo-tree
-        yasnippet
         ))
 
 (defun better-editing/init-multiple-cursors ()
@@ -110,6 +109,15 @@ if only one candidate searched, then quit!"
       :defer t
       )))
 
+(defun better-editing/init-server ()
+  (use-package server :ensure nil
+    :init
+    (defun server-ensure-safe-dir (dir) "Noop" t)
+    (unless (file-exists-p server-auth-dir)
+      (make-directory server-auth-dir))
+    (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
+      (make-directory server-socket-dir))))
+
 ;; post
 
 (defun better-editing/post-init-helm-swoop ()
@@ -139,10 +147,17 @@ if only one candidate searched, then quit!"
   (setq company-show-numbers t))
 
 (defun better-editing/post-init-magit ()
-  (unbind-key "M-1" magit-mode-map)
-  (unbind-key "M-2" magit-mode-map)
-  (unbind-key "M-3" magit-mode-map)
-  (unbind-key "M-4" magit-mode-map))
+  (use-package magit
+    :defer t
+    :config
+    (progn
+      (unbind-key "M-1" magit-mode-map)
+      (unbind-key "M-2" magit-mode-map)
+      (unbind-key "M-3" magit-mode-map)
+      (unbind-key "M-4" magit-mode-map))))
+
+(defun better-editing/post-init-undo-tree ()
+  )
 
 
 ;;; packages.el ends here

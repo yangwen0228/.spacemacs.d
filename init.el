@@ -58,7 +58,7 @@ values."
      org graphviz markdown
      emacs-lisp
      csv
-     html
+     html javascript
      python
      restclient
      sql

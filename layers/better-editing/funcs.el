@@ -197,16 +197,3 @@ The body of the advice is in BODY."
   "Multiply-cursors support for underscore-to-camel."
   (interactive)
   (mc/execute-command-for-all-cursors 'better-editing/underscore-to-camel))
-
-(defun better-editing/undo-tree-undo (&optional arg)
-  "Fix bug: the redo point is not corret."
-  (interactive "*P")
-  ;; throw error if undo is disabled in buffer
-  (when (eq buffer-undo-list t)
-    (user-error "No undo information in this buffer"))
-  (undo-tree-undo-1 arg)
-  ;; Bugfix: the cursor jump twice
-  (undo-tree-redo-1 arg)
-  (undo-tree-undo-1 arg)
-  ;; inform user if at branch point
-  (when (> (undo-tree-num-branches) 1) (message "Undo branch point!")))
