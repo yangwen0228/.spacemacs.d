@@ -110,11 +110,13 @@ if only one candidate searched, then quit!"
       :defer t
       )))
 
-(defun better-editing/post-helm-swoop ()
+;; post
+
+(defun better-editing/post-init-helm-swoop ()
   (setq helm-swoop-move-to-line-cycle nil)
   (bind-key* "M-i" 'spacemacs/helm-swoop-region-or-symbol))
 
-(defun better-editing/post-winum ()
+(defun better-editing/post-init-winum ()
   (better-editing/defadvice-commands
    "auto-save" before
    (winum-select-window-1
@@ -124,7 +126,7 @@ if only one candidate searched, then quit!"
     winum-select-window-5)
    (better-editing/auto-save)))
 
-(defun better-editing/post-imenu ()
+(defun better-editing/post-init-imenu ()
   (add-to-list 'lisp-imenu-generic-expression
                (list "Use-package"
                      (concat
@@ -133,10 +135,10 @@ if only one candidate searched, then quit!"
                       )
                      1)))
 
-(defun better-editing/post-company ()
+(defun better-editing/post-init-company ()
   (setq company-show-numbers t))
 
-(defun better-editing/post-magit ()
+(defun better-editing/post-init-magit ()
   (unbind-key "M-1" magit-mode-map)
   (unbind-key "M-2" magit-mode-map)
   (unbind-key "M-3" magit-mode-map)

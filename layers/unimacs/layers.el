@@ -12,4 +12,6 @@
 (configuration-layer/declare-layers
  '(
    better-editing
+   vue
+   web
    ))

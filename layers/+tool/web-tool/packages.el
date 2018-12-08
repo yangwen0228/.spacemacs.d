@@ -20,7 +20,7 @@
     restclient
     ))
 
-(defun web-tool/post-restclient ()
+(defun web-tool/post-init-restclient ()
   (spacemacs/set-leader-keys-for-major-mode 'restclient-mode
     "e" 'web-tool/restclient-open-example-http))
 
