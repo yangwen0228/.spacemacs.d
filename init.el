@@ -27,29 +27,50 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers")
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
-     auto-completion
+     ;; -------- standard --------
+     spacemacs-bootstrap
      better-defaults
+     chinese
+     helm
+     (ibuffer :variables ibuffer-group-buffers-by 'projects)
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default nil
+                      syntax-checking-enable-tooltips nil)
+     (spell-checking :variables spell-checking-enable-by-default nil)
+     (auto-completion :variables
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-snippets-in-popup t
+                      :disabled-for org markdown)
+     git version-control
+     (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
+     imenu-list
+     nginx
+     org graphviz markdown
      emacs-lisp
-     git
-     markdown
-     org
+     csv
+     html
+     python
+     restclient
+     sql
      (shell :variables
+            shell-default-shell 'eshell
             shell-default-height 30
             shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
-     version-control
-     vue-mode
+     shell-scripts windows-scripts
+     yaml
+     osx
+     ;; -------- custom --------
+     unimacs
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -311,6 +332,14 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq-default package-archives
+                '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                  ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                  ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
+                  ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
+                  ("org" . "http://elpa.emacs-china.org/org/")
+                  ("SC" . "http://elpa.emacs-china.org/sunrise-commander/")
+                  ("user42" . "http://elpa.emacs-china.org/user42/")))
   (defun server-ensure-safe-dir (dir) "Noop" t)
   )
 
@@ -323,20 +352,11 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   )
 
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (ir-black-theme jazz-theme jbeans-theme light-soap-theme lush-theme madhat2r-theme majapahit-theme material-theme minimal-theme moe-theme molokai-theme monokai-theme monochrome-theme mustang-theme naquadah-theme noctilux-theme obsidian-theme occidental-theme omtose-phellack-theme oldlace-theme organic-green-theme phoenix-dark-mono-theme phoenix-dark-pink-theme planet-theme professional-theme purple-haze-theme railscasts-theme rebecca-theme reverse-theme seti-theme smyx-theme soft-charcoal-theme soft-morning-theme soft-stone-theme solarized-theme soothe-theme spacegray-theme subatomic-theme subatomic256-theme sublime-themes sunny-day-theme tango-2-theme tango-plus-theme tangotango-theme tao-theme toxi-theme twilight-anti-bright-theme twilight-bright-theme twilight-theme ujelly-theme underwater-theme white-sand-theme zen-and-art-theme zenburn-theme helm-cscope xcscope ggtags helm-gtags bracketed-paste origami hl-anything gist github-browse-file github-clone github-search magit-gh-pulls gh marshal logito pcache p4 floobits company-nixos-options helm-nixos-options nix-mode nixos-options launchctl osx-dictionary osx-trash pbcopy reveal-in-osx-finder nlinum-relative nlinum adoc-mode markup-faces nasm-mode x86-lookup ahk-mode org-ref pdf-tools key-chord tablist helm-bibtex parsebib biblio biblio-core disaster clang-format cmake-mode company-c-headers srefactor stickyfunc-enhance cider-eval-sexp-fu clj-refactor edn cider paredit sesman queue peg clojure-mode clojure-snippets common-lisp-snippets slime-company slime omnisharp shut-up csharp-mode csv-mode company-dcd d-mode flycheck-dmd-dub alchemist flycheck-mix elixir-mode flycheck-credo ob-elixir elm-mode flycheck-elm erlang ess-R-data-view ess-smart-equals ess arduino-mode julia-mode matlab-mode qml-mode scad-mode stan-mode thrift faust-mode fsharp-mode company-go flycheck-gometalinter go-eldoc go-guru go-mode graphviz-dot-mode cmm-mode company-cabal company-ghci company-ghc flycheck-haskell ghc haskell-snippets helm-hoogle hindent hlint-refactor intero haskell-mode company-web web-completion-data emmet-mode helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit web-mode idris-mode prop-menu ein request-deferred company-emacs-eclim eclim coffee-mode company-tern js-doc js2-refactor multiple-cursors json-mode json-reformat json-snatcher tern web-beautify livid-mode skewer-mode js2-mode simple-httpd auctex-latexmk company-auctex auctex typo lua-mode company-emoji emoji-cheat-sheet-plus vmd-mode flycheck-nim nim-mode flycheck-nimsuggest commenter epc ctable concurrent deferred merlin ocp-indent tuareg caml utop drupal-mode php-auto-yasnippets php-extras php-mode phpcbf phpunit plantuml-mode psci purescript-mode psc-ide company-anaconda anaconda-mode cython-mode helm-pydoc hy-mode live-py-mode pip-requirements py-isort pyenv-mode pythonic pytest pyvenv yapfify company-quickhelp racket-mode faceup bundler chruby enh-ruby-mode minitest rbenv robe rspec-mode rubocop ruby-test-mode ruby-tools rvm cargo racer flycheck-rust rust-mode toml-mode ensime noflet scala-mode sbt-mode geiser glsl-mode company-glsl company-shell fish-mode insert-shebang ob-sml sml-mode sql-indent swift-mode tide typescript-mode vimrc-mode dactyl-mode powershell pyim pyim-basedict chinese-wbim fcitx find-by-pinyin-dired ace-pinyin pinyinlib pangu-spacing youdao-dictionary names chinese-word-at-point 2048-game pacmacs dash-functional sudoku typit mmt selectric-mode xkcd pony-mode feature-mode projectile-rails rake inf-ruby inflections mu4e-alert mu4e-maildirs-extension ibuffer-projectile ox-twbs ox-gfm ox-reveal smex counsel-projectile counsel swiper ivy-hydra wgrep flyspell-correct-ivy ivy flyspell-correct-popup flyspell-popup erc-terminal-notifier erc-gitter erc-hl-nicks erc-image erc-social-graph erc-view-log erc-yt jabber srv fsm rcirc-color rcirc-notify slack emojify circe oauth2 websocket ht xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit ghub treepy graphql with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu highlight elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed ace-link ace-jump-helm-line helm helm-core popup which-key undo-tree hydra evil-unimpaired f s dash async aggressive-indent adaptive-wrap ace-window avy)))
- '(send-mail-function (quote mailclient-send-it)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+(load custom-file 'no-error 'no-message)
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+  )
