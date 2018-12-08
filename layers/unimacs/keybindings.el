@@ -32,4 +32,7 @@
   ;; helm
   (when (configuration-layer/package-usedp 'helm)
     (bind-key* "C-x C-f" 'helm-find-files))
+  ;; undo/redo
+  (bind-key* "C-_" 'better-editing/undo-tree-undo)
+  (bind-key* "C--" 'undo-tree-redo)
 )

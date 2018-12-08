@@ -28,6 +28,7 @@
         helm-swoop
         imenu
         winum
+        undo-tree
         yasnippet
         ))
 
@@ -132,7 +133,6 @@ if only one candidate searched, then quit!"
                      1)))
 
 (defun better-editing/post-company ()
-  )
-
+  (setq company-show-numbers t))
 
 ;;; packages.el ends here
