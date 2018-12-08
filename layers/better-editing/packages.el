@@ -27,6 +27,7 @@
         helm
         helm-swoop
         imenu
+        magit
         winum
         undo-tree
         yasnippet
@@ -134,5 +135,12 @@ if only one candidate searched, then quit!"
 
 (defun better-editing/post-company ()
   (setq company-show-numbers t))
+
+(defun better-editing/post-magit ()
+  (unbind-key "M-1" magit-mode-map)
+  (unbind-key "M-2" magit-mode-map)
+  (unbind-key "M-3" magit-mode-map)
+  (unbind-key "M-4" magit-mode-map))
+
 
 ;;; packages.el ends here
