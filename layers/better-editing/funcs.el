@@ -126,22 +126,22 @@ Optional UPPER: user_name -> UserName."
        (if upper (upcase first-char) (downcase first-char))
        (substring result 1)))))
 
+(defun better-editing//region-or-symbol ()
+  "Get the region or symbol under the cursor."
+  (if (region-active-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (thing-at-point 'symbol t)))
+
 (defun better-editing/camel-to-underscore ()
   "Convert region or current symbol from camel to underscore style."
   (interactive)
-  (let ((word (if (region-active-p)
-                  (buffer-substring-no-properties
-                   (region-beginning) (region-end))
-                (thing-at-point 'symbol t))))
+  (let ((word (better-editing//region-or-symbol)))
     (better-editing/replace-string (better-editing//camel-to-underscore word))))
 
 (defun better-editing/underscore-to-camel ()
   "Convert region or current symbol from underscore to camel style."
   (interactive)
-  (let ((word (if (region-active-p)
-                  (buffer-substring-no-properties
-                   (region-beginning) (region-end))
-                (thing-at-point 'symbol t))))
+  (let ((word (better-editing//region-or-symbol)))
     (better-editing/replace-string (better-editing//underscore-to-camel word))))
 
 ;; automatically save buffers associated with files when focus changed
