@@ -30,6 +30,7 @@
         magit
         winum
         undo-tree
+        smartparens
         ))
 
 (defun better-editing/init-multiple-cursors ()
@@ -159,5 +160,16 @@ if only one candidate searched, then quit!"
 (defun better-editing/post-init-undo-tree ()
   )
 
+(defun better-editing/post-init-undo-tree ()
+  ;; forward/backward
+  (bind-key* "C-M-f" 'sp-forward-sexp)
+  (bind-key* "C-M-b" 'sp-backward-sexp)
+  (bind-key* "C-M-k" 'kill-sexp)
+  (bind-key* "C-M-SPC" 'sp-mark-sexp)
+  (bind-key* "C-M-u" 'sp-backward-up-sexp)
+  (bind-key* "C-M-d" 'sp-down-sexp)
+  (bind-key* "M-[" 'sp-unwrap-sexp)
+  (bind-key* "M-]" 'sp-rewrap-sexp)
+  )
 
 ;;; packages.el ends here

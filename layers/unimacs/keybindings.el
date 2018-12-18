@@ -35,4 +35,7 @@
   ;; undo/redo
   (bind-key* "C-_" 'undo-tree-undo)
   (bind-key* "C--" 'undo-tree-redo)
+  ;; jump
+  (bind-key* "C-<down-mouse-1>" 'better-editing/click-jump)
+
 )

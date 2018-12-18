@@ -197,3 +197,19 @@ The body of the advice is in BODY."
   "Multiply-cursors support for underscore-to-camel."
   (interactive)
   (mc/execute-command-for-all-cursors 'better-editing/underscore-to-camel))
+
+(defun better-editing/click-jump (event)
+  "Ctrl + Mouse1 to jump to the definition or reference."
+  (interactive "e")
+  (mouse-minibuffer-check event)
+  ;; Use event-end in case called from mouse-drag-region.
+  ;; If EVENT is a click, event-end and event-start give same value.
+  (let ((position (event-end event)))
+    (if (not (windowp (posn-window position)))
+        (error "Position not in text area of window"))
+    (select-window (posn-window position))
+    (let ((pt (posn-point position)))
+      (when (numberp pt)
+          (goto-char pt)
+          (call-interactively 'spacemacs/helm-project-do-ag-region-or-symbol)
+        ))))

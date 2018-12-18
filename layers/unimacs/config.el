@@ -1,4 +1,4 @@
-;;; layers.el --- Spacemacs Layer layers File
+;;; config.el --- unimacs layer config file for Spacemacs.
 ;;
 ;; Copyright (c) 2018 WEN YANG & Contributors
 ;;
@@ -9,10 +9,10 @@
 ;;
 ;;; License: GPLv3
 
-(configuration-layer/declare-layers
- '(
-   better-editing
-   web-tool
-   exec-path
-   vue
-   ))
+
+
+;; unimacs config
+
+(setq frame-title-format
+      '(" Unimacs - "
+        (:eval (if (buffer-file-name) (abbreviate-file-name (buffer-file-name)) "%b"))))

@@ -31,7 +31,6 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -58,7 +57,12 @@ values."
      org graphviz markdown
      emacs-lisp
      csv
-     html javascript
+     html
+     javascript
+     (typescript :variables
+                 typescript-fmt-on-save t
+                 typescript-fmt-tool 'typescript-formatter)
+     react
      python
      restclient
      sql
@@ -339,9 +343,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
                   ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
                   ("org" . "http://elpa.emacs-china.org/org/")
                   ("SC" . "http://elpa.emacs-china.org/sunrise-commander/")
-                  ("user42" . "http://elpa.emacs-china.org/user42/")))
-  (defun server-ensure-safe-dir (dir) "Noop" t)
-  )
+                  ("user42" . "http://elpa.emacs-china.org/user42/"))))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
