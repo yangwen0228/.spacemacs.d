@@ -2,6 +2,15 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(setq-default package-archives
+              '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
+                ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
+                ("org" . "http://elpa.emacs-china.org/org/")
+                ("SC" . "http://elpa.emacs-china.org/sunrise-commander/")
+                ("user42" . "http://elpa.emacs-china.org/user42/")))
+
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -336,14 +345,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (setq-default package-archives
-                '(("gnu" . "http://elpa.emacs-china.org/gnu/")
-                  ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                  ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                  ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
-                  ("org" . "http://elpa.emacs-china.org/org/")
-                  ("SC" . "http://elpa.emacs-china.org/sunrise-commander/")
-                  ("user42" . "http://elpa.emacs-china.org/user42/"))))
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.

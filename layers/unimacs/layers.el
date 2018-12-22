@@ -11,6 +11,7 @@
 
 (configuration-layer/declare-layers
  '(
+   ui
    better-editing
    web-tool
    exec-path
