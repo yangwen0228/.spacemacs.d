@@ -34,8 +34,11 @@
     (bind-key* "C-x C-f" 'helm-find-files))
   ;; undo/redo
   (bind-key* "C-_" 'undo-tree-undo)
-  (bind-key* "C--" 'undo-tree-redo)
   (bind-key* "C-—" 'undo-tree-undo) ; chinese
+  (bind-key* "C--" 'undo-tree-redo)
+  ;; beginning/end
+  (bind-key* "M-《" 'beginning-of-buffer)
+  (bind-key* "M-》" 'end-of-buffer)
   ;; jump
   (bind-key* "C-<down-mouse-1>" 'better-editing/click-jump)
 

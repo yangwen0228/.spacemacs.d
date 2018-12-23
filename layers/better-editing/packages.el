@@ -42,10 +42,17 @@
             ("C-<"     . mc/mark-previous-like-this)
             ("C-M->"   . mc/skip-to-next-like-this)
             ("C-M-<"   . mc/skip-to-previous-like-this)
+            ("C-；"     . mc/mark-all-like-this-dwim)
+            ("C-："     . mc/mark-all-like-this-in-defun-dwim)
+            ("C-》"     . mc/mark-next-like-this)
+            ("C-《"     . mc/mark-previous-like-this)
+            ("C-M-》"   . mc/skip-to-next-like-this)
+            ("C-M-《"   . mc/skip-to-previous-like-this)
             ("C-S-<mouse-1>" . mc/add-cursor-on-click)
             :map mc/keymap
             ("C-|" . mc/vertical-align-with-space)
             ("C-_" . undo) ;undo-tree-undo point position wrong.
+            ("C-—" . undo) ;chinese
             ("M-n" . mc/cycle-forward)
             ("M-p" . mc/cycle-backward))
     :init
