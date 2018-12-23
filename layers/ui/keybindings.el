@@ -1,3 +1,16 @@
+;;; keybindings.el --- ui layer keybindings file for Spacemacs.
+;;
+;; Copyright (c) 2018 WEN YANG & Contributors
+;;
+;; Author: WEN YANG <steven@WENdeMacBook-Pro.local>
+;; URL: https://github.com/yangwen0228/.spacemacs.d
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
+
+
 ;; override should put in keybindings, load at last.
 (defun spacemacs/scale-up-or-down-font-size (direction)
   "Scale the font. If DIRECTION is positive or zero the font is scaled up,
