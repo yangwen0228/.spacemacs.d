@@ -55,6 +55,8 @@
            ("C-c C-v" . nodejs-repl-send-region)
            ("C-c C-b" . nodejs-repl-send-buffer))))
 
+(defun vue/init-javascript-mode ())
+
 ;; post
 
 (defun vue/post-init-company ()

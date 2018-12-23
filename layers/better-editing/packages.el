@@ -167,7 +167,7 @@ if only one candidate searched, then quit!"
 (defun better-editing/post-init-undo-tree ()
   )
 
-(defun better-editing/post-init-undo-tree ()
+(defun better-editing/post-init-smartparens ()
   ;; forward/backward
   (bind-key* "C-M-f" 'sp-forward-sexp)
   (bind-key* "C-M-b" 'sp-backward-sexp)
