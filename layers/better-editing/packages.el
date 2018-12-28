@@ -25,12 +25,13 @@
         server
         ;; post
         company
-        helm-swoop
         imenu
         magit
         winum
         undo-tree
         smartparens
+        helm-swoop
+        helm-ag
         ))
 
 (defun better-editing/init-multiple-cursors ()
@@ -115,6 +116,8 @@ if only one candidate searched, then quit!"
   (when (configuration-layer/package-usedp 'yasnippet)
     (use-package yasnippet-snippets
       :defer t
+      :init
+      (add-to-list 'yas-snippet-dirs 'yasnippet-snippets-dir t)
       )))
 
 (defun better-editing/init-server ()
@@ -127,10 +130,6 @@ if only one candidate searched, then quit!"
       (make-directory server-socket-dir))))
 
 ;; post
-
-(defun better-editing/post-init-helm-swoop ()
-  (setq helm-swoop-move-to-line-cycle nil)
-  (bind-key* "M-i" 'spacemacs/helm-swoop-region-or-symbol))
 
 (defun better-editing/post-init-winum ()
   (better-editing/defadvice-commands
@@ -166,6 +165,20 @@ if only one candidate searched, then quit!"
 
 (defun better-editing/post-init-undo-tree ()
   )
+
+(defun better-editing/post-init-helm-swoop ()
+  (setq helm-swoop-move-to-line-cycle nil)
+  (bind-key* "M-i" 'spacemacs/helm-swoop-region-or-symbol)
+  (better-editing/defadvice-commands
+   "auto-save" before
+   (helm-swoop-edit)
+   (better-editing/auto-save)))
+
+(defun better-editing/post-init-helm-ag ()
+  (better-editing/defadvice-commands
+   "auto-save" before
+   (helm-ag-edit)
+   (better-editing/auto-save)))
 
 (defun better-editing/post-init-smartparens ()
   ;; forward/backward

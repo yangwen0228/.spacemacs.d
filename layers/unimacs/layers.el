@@ -11,9 +11,10 @@
 
 (configuration-layer/declare-layers
  '(
-   ui
    better-editing
-   web-tool
+   cnblogs
    exec-path
+   ui
    vue
+   web-tool
    ))

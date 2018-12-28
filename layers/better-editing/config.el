@@ -23,3 +23,6 @@
  (better-editing/auto-save))
 (add-hook 'mouse-leave-buffer-hook 'better-editing/auto-save)
 (add-hook 'focus-out-hook 'better-editing/auto-save)
+
+(defvar better-editing/snippets-dir
+  (expand-file-name "snippets" (file-name-directory dotspacemacs-filepath)))
