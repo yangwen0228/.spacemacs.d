@@ -166,6 +166,7 @@ The body of the advice is in BODY."
 ;; multiple cursors functions
 (defun mc//number-read-from-minibuffer ()
   "Read a number from the minibuffer."
+  (require 'number)
   (number-read (read-from-minibuffer "Number: " "1")))
 
 (defun mc/number/add (n)
