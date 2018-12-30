@@ -23,8 +23,10 @@
         whole-line-or-region
         yasnippet-snippets
         server
+        smart-tab
         ;; post
         company
+        elisp-slime-nav
         imenu
         magit
         winum
@@ -129,6 +131,23 @@ if only one candidate searched, then quit!"
     (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
       (make-directory server-socket-dir))))
 
+(defun better-editing/init-smart-tab ()
+  (use-package smart-tab
+    :defer t
+    :diminish smart-tab-mode
+    :init
+    (setq smart-tab-completion-functions-alist nil
+          smart-tab-using-hippie-expand t)
+    (if (configuration-layer/package-usedp 'org)
+        (add-hook 'org-mode-hook 'smart-tab-mode-on))
+    ;; bug in `smart-tab-default', the default keybinding can't be `smart-tab'
+    ;; avoid infinite looping, can't use `bind*'. use `add-hook' to turn on.
+    :bind ("<tab>" . smart-tab)
+    :config
+    (setq smart-tab-disabled-major-modes
+          (remove 'org-mode smart-tab-disabled-major-modes)) ; org-mode: yasnippet
+    (global-smart-tab-mode 1)))
+
 ;; post
 
 (defun better-editing/post-init-winum ()
@@ -152,6 +171,12 @@ if only one candidate searched, then quit!"
 
 (defun better-editing/post-init-company ()
   (setq company-show-numbers t))
+
+(defun better-editing/post-init-elisp-slime-nav ()
+  (defun better-editing/xref-find-references (identifier)
+    (interactive (list (elisp-slime-nav--read-symbol-at-point)))
+    (xref--find-xrefs identifier 'references identifier nil))
+  (bind-key "M-?" 'better-editing/xref-find-references))
 
 (defun better-editing/post-init-magit ()
   (use-package magit
