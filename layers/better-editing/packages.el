@@ -24,6 +24,8 @@
         yasnippet-snippets
         server
         smart-tab
+        jumplist
+        (happie-jump :location local)
         ;; post
         company
         elisp-slime-nav
@@ -147,6 +149,36 @@ if only one candidate searched, then quit!"
     (setq smart-tab-disabled-major-modes
           (remove 'org-mode smart-tab-disabled-major-modes)) ; org-mode: yasnippet
     (global-smart-tab-mode 1)))
+
+(defun better-editing/init-jumplist ()
+  (use-package jumplist
+    :defer t
+    :bind* (("<C-M-left>" . jumplist-previous)
+            ("<C-M-right>" . jumplist-next))
+    :init
+    (custom-set-variables
+     '(jumplist-hook-commands
+       '(beginning-of-defun
+         end-of-defun
+         end-of-buffer beginning-of-buffer
+         happie-jump
+         helm-swoop helm-imenu helm-find-files helm-multi-files
+         helm-projectile-switch-project helm-projectile-find-file
+         find-function find-variable))
+     '(jumplist-ex-mode t))
+    :config
+    ))
+
+(defun better-editing/init-happie-jump ()
+  (use-package happie-jump :ensure nil
+    :bind* ("M-." . happie-jump)
+    :init
+    (setq happie-jump-try-functions-alist
+          '((emacs-lisp-mode . (elisp-slime-nav-find-elisp-thing-at-point))))
+    (when (configuration-layer/package-usedp 'dumb-jump)
+      (setq happie-jump-default-functions '(dumb-jump-go)))
+    (when (configuration-layer/package-usedp 'jumplist)
+      (bind-key* "M-," 'jumplist-previous))))
 
 ;; post
 

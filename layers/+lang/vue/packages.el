@@ -25,6 +25,7 @@
         company
         ;; tide
         ;; company-tide
+        dumb-jump
         tern
         company-tern
         flycheck
@@ -63,6 +64,17 @@
   (spacemacs|add-company-hook js-mode)
   (spacemacs|add-company-hook vue-mode))
 
+(defun vue/post-init-dumb-jump ()
+  (defvar vue--init-dumb-jump-initp nil)
+  (unless vue--init-dumb-jum-initp
+    (setq vue--init-dumb-jump-initp t)
+    (add-to-list
+     'dumb-jump-find-rules
+     '(:type "variable"
+             :supports ("ag" "grep" "rg" "git-grep") :language "javascript"
+             :regex "\\s*\\bJJJ\\s*:[^:\\n]+"
+             :tests ("test : 1234", "test: 1234")))))
+
 (defun vue/post-init-flycheck ()
   (spacemacs/add-flycheck-hook 'js-mode)
   (spacemacs/add-flycheck-hook 'vue-mode)
@@ -75,10 +87,6 @@
   (spacemacs/js-doc-set-key-bindings 'js-mode)
   (spacemacs/js-doc-set-key-bindings 'vue-mode))
 
-(defun vue/post-init-evil-matchit ()
-  (add-hook `js-mode `turn-on-evil-matchit-mode)
-  (add-hook `vue-mode `turn-on-evil-matchit-mode))
-
 ;; (defun vue/post-init-tide ()
 ;;   (add-hook 'js-mode-hook 'tide-setup)
 ;;   (push 'company-tide company-backends-js-mode))
@@ -86,8 +94,8 @@
 (defun vue/post-init-company-tern ()
   (when (and (configuration-layer/package-usedp 'company)
              (configuration-layer/package-usedp 'tern))
-    (push 'company-tern company-backends-js-mode)
-    (push 'company-tern company-backends-vue-mode)))
+    (add-to-list 'company-backends-js-mode 'company-tern)
+    (add-to-list 'company-backends-vue-mode 'company-tern)))
 
 (defun vue/post-init-tern ()
   ;; cnpm -g install tern
