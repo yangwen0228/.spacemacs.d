@@ -30,6 +30,7 @@
         company
         elisp-slime-nav
         imenu
+        helm
         magit
         winum
         undo-tree
@@ -152,7 +153,7 @@ if only one candidate searched, then quit!"
 
 (defun better-editing/init-jumplist ()
   (use-package jumplist
-    :defer t
+    :defer 0
     :bind* (("<C-M-left>" . jumplist-previous)
             ("<C-M-right>" . jumplist-next))
     :init
@@ -161,22 +162,28 @@ if only one candidate searched, then quit!"
        '(beginning-of-defun
          end-of-defun
          end-of-buffer beginning-of-buffer
-         happie-jump
+         happie-jump-definition
+         happie-jump-references
          helm-swoop helm-imenu helm-find-files helm-multi-files
          helm-projectile-switch-project helm-projectile-find-file
          find-function find-variable))
      '(jumplist-ex-mode t))
-    :config
     ))
 
 (defun better-editing/init-happie-jump ()
   (use-package happie-jump :ensure nil
-    :bind* ("M-." . happie-jump)
+    :defer t
+    :bind* (("M-." . happie-jump-definition)
+            ("M-?" . happie-jump-references))
     :init
-    (setq happie-jump-try-functions-alist
+    (setq happie-jump-try-definition-functions-alist
           '((emacs-lisp-mode . (elisp-slime-nav-find-elisp-thing-at-point))))
+    (setq happie-jump-try-references-functions-alist
+          '((emacs-lisp-mode . (better-editing/xref-find-references))))
     (when (configuration-layer/package-usedp 'dumb-jump)
-      (setq happie-jump-default-functions '(dumb-jump-go)))
+      (setq happie-jump-default-definition-functions '(dumb-jump-go))
+      (setq happie-jump-default-references-functions '(spacemacs/helm-project-do-ag-region-or-symbol)))
+    :config
     (when (configuration-layer/package-usedp 'jumplist)
       (bind-key* "M-," 'jumplist-previous))))
 
@@ -222,6 +229,38 @@ if only one candidate searched, then quit!"
 
 (defun better-editing/post-init-undo-tree ()
   )
+
+(defun better-editing/post-init-helm ()
+  (defun helm-ff-directory-files (directory)
+  "List contents of DIRECTORY.
+Argument FULL mean absolute path.
+It is same as `directory-files' but always returns the
+dotted filename '.' and '..' even on root directories in Windows
+systems."
+  (setq directory (file-name-as-directory
+                   (expand-file-name directory)))
+  (let* (file-error
+         (ls   (condition-case err
+                   (helm-list-directory directory)
+                 ;; Handle file-error from here for Windows
+                 ;; because predicates like `file-readable-p' and friends
+                 ;; seem broken on emacs for Windows systems (always returns t).
+                 ;; This should never be called on GNU/Linux/Unix
+                 ;; as the error is properly intercepted in
+                 ;; `helm-find-files-get-candidates' by `file-readable-p'.
+                 (file-error
+                  (prog1
+                      (list (format "%s:%s"
+                                    (car err)
+                                    (mapconcat 'identity (cdr err) " ")))
+                    (setq file-error t)))))
+         (dot  (concat directory "."))
+         (dot2 (concat directory "..")))
+    (puthash directory (+ (length ls) 2) helm-ff--directory-files-hash)
+    ;; (append (and (not file-error) (list dot dot2)) ls)
+    ;; return the files only, excluding the dot fiels "." and "..".
+    ls
+    )))
 
 (defun better-editing/post-init-helm-swoop ()
   (setq helm-swoop-move-to-line-cycle nil)

@@ -33,10 +33,10 @@
 ;; language or mode.
 
 ;; It exports one function, `happie-jump', and requires you to fill in
-;; an alist, `happie-jump-try-functions-alist', which will look something
+;; an alist, `happie-jump-try-definition-functions-alist', which will look something
 ;; like this (here's mine).
 
-;;        (setq happie-jump-try-functions-alist
+;;        (setq happie-jump-try-definition-functions-alist
 ;;              '((confluence-markup-mode . (confluence-markup-visit-wiki-word-file-at-point))
 ;;                (c-mode . (xref-find-definitions ggtags-find-tag-dwim semantic-ia-fast-jump))
 ;;                (cperl-mode . (cperl-view-module-source))
@@ -46,29 +46,62 @@
 
 ;;; Code:
 
-(defvar happie-jump-try-functions-alist nil
-  "Dispatch table used by `happie-jump' to decide which jump function to use for a given mode.")
+(defvar happie-jump-try-definition-functions-alist nil
+  "Goto definition by `happie-jump-definition' to decide
+which jump function to use for a given mode.")
 
-(defvar happie-jump-default-functions nil
-  "If the major-mode's jump functions is configured in
-`happie-jump-try-function-alist', use this function instead.")
+(defvar happie-jump-try-references-functions-alist nil
+  "Goto definition by `happie-jump-references' to decide
+which jump function to use for a given mode.")
 
-(defun happie-jump--get-functions (mode)
-  "Given the name of a MODE, return the jump functions to call."
+(defvar happie-jump-default-definition-functions nil
+  "If the major-mode's jump definition functions is configured in
+`happie-jump-try-definition-functions-alist', use this function instead.")
+
+(defvar happie-jump-default-references-functions nil
+  "If the major-mode's jump references functions is configured in
+`happie-jump-try-references-functions-alist', use this function instead.")
+
+(defun happie-jump--get-definition-functions (mode)
+  "Given the name of a MODE, return the jump definition functions to call."
   (seq-filter 'fboundp
-              (or (assoc mode happie-jump-try-functions-alist)
-                  happie-jump-default-functions)))
+              (or (assoc mode happie-jump-try-definition-functions-alist)
+                  happie-jump-default-definition-functions)))
 
-(defun happie-jump ()
+(defun happie-jump--get-references-functions (mode)
+  "Given the name of a MODE, return the jump references functions to call."
+  (seq-filter 'fboundp
+              (or (assoc mode happie-jump-try-references-functions-alist)
+                  happie-jump-default-references-functions)))
+
+(defun happie-jump-definition ()
   "Call the 'jump to source' functions defined for the current mode."
   (interactive)
   (let* ((mode major-mode)
-         (funcs (happie-jump--get-functions mode)))
+         (funcs (happie-jump--get-definition-functions mode)))
     (if (or (null funcs)
             (not (listp funcs))
             (= 0 (length funcs)))
         (error
-         "No handler for `%s' defined in `happie-jump-try-functions-alist'"
+         "No handler for `%s' defined in `happie-jump-try-definition-functions-alist'"
+         mode)
+      (let ((i 0)
+            (len (length funcs)))
+	      (while (not (or (>= i len)
+			                  (when (fboundp (nth i funcs))
+                          (call-interactively (nth i funcs)))))
+	        (setq i (1+ i)))))))
+
+(defun happie-jump-references ()
+  "Call the 'jump to references' functions defined for the current mode."
+  (interactive)
+  (let* ((mode major-mode)
+         (funcs (happie-jump--get-references-functions mode)))
+    (if (or (null funcs)
+            (not (listp funcs))
+            (= 0 (length funcs)))
+        (error
+         "No handler for `%s' defined in `happie-jump-try-references-functions-alist'"
          mode)
       (let ((i 0)
             (len (length funcs)))

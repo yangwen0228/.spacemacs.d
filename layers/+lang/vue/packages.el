@@ -38,6 +38,9 @@
   (use-package vue-mode
     :defer t
     :mode (("\\.vue\\'" . vue-mode))
+    :init
+    (add-hook 'vue-mode-hook (lambda ()
+                               (modify-syntax-entry ?. "." sgml-mode-syntax-table)))
     :config
     (spacemacs/set-leader-keys-for-major-mode 'vue-mode
       "r" 'vue-mode-reparse
@@ -45,8 +48,7 @@
     (setq vue-html-extra-indent 0
           sgml-basic-offset 2
           js-indent-level 2
-          css-indent-offset 2)
-    (modify-syntax-entry ?. ".")))
+          css-indent-offset 2)))
 
 (defun vue/init-nodejs-repl ()
   (use-package nodejs-repl
@@ -65,9 +67,7 @@
   (spacemacs|add-company-hook vue-mode))
 
 (defun vue/post-init-dumb-jump ()
-  (defvar vue--init-dumb-jump-initp nil)
-  (unless vue--init-dumb-jum-initp
-    (setq vue--init-dumb-jump-initp t)
+  (with-eval-after-load 'dumb-jump
     (add-to-list
      'dumb-jump-find-rules
      '(:type "variable"
