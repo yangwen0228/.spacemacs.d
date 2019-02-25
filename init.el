@@ -36,26 +36,36 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; -------- standard --------
+     ;;; :feature
      spacemacs-bootstrap
      better-defaults
-     chinese
-     helm
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
      (spell-checking :variables spell-checking-enable-by-default nil)
+     chinese
+     ;;; :completion
+     ;; helm
+     ivy
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
                       :disabled-for org markdown)
-     git version-control
-     (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      imenu-list
+     ;;; :ui
+     ;;; :tools
+     osx
+     git
+     version-control
+     (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      nginx
-     org graphviz markdown
+     graphviz
+     restclient
+     ;;; :lang
      emacs-lisp
+     org
+     markdown
      csv
      html
      javascript
@@ -64,16 +74,16 @@ values."
                  typescript-fmt-tool 'typescript-formatter)
      react
      python
-     restclient
      sql
      (shell :variables
             shell-default-shell 'eshell
             shell-default-height 30
             shell-default-position 'bottom)
-     shell-scripts windows-scripts
+     shell-scripts
+     windows-scripts
      yaml
-     osx
-     ;; -------- custom --------
+     ;;; :app
+     ;;; :private
      unimacs
      )
    ;; List of additional packages that will be installed without being
@@ -142,7 +152,7 @@ values."
    ;; Possible values for list-type are:
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
-   ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; `spacemacs-buffer-startup-lisnts-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7))
    ;; True if the home buffer should respond to resize events.
@@ -228,7 +238,7 @@ values."
    ;; in all non-asynchronous sources. If set to `source', preserve individual
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'always
+   dotspacemacs-helm-use-fuzzy nil
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state nil
@@ -278,7 +288,7 @@ values."
    ;; This variable can also be set to a property list for finer control:
    ;; '(:relative nil
    ;;   :disabled-for-modes dired-mode
-   ;;                       doc-view-mode
+   ;;                       doc-view-modep
    ;;                       markdown-mode
    ;;                       org-mode
    ;;                       pdf-view-mode
@@ -336,6 +346,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq gc-cons-threshold 400000000)
   (setq-default configuration-layer--elpa-archives
                 '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                   ("melpa" . "http://elpa.emacs-china.org/melpa/")
@@ -352,7 +363,7 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  )
+  (setq gc-cons-threshold 20000000))
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)

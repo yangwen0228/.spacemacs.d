@@ -21,7 +21,13 @@
 (defun exec-path/post-init-exec-path-from-shell ()
   (cond
    ((spacemacs/system-is-mac) (add-to-list 'exec-path "/usr/local/Cellar/node/11.4.0/bin"))
-   ;; ((spacemacs/system-is-mswindows) (add-to-list 'exec-path ""))
+   ((spacemacs/system-is-mswindows)
+    (add-to-list 'exec-path "C:/git/unimacs/utils/extra-bins/msys64/bin")
+    (setenv "PATH" (concat
+                    (replace-regexp-in-string "\/" "\\\\" "C:/git/unimacs/utils/extra-bins/msys64/bin")
+                    ";"
+                    (getenv "PATH")))
+    )
    ))
 
 

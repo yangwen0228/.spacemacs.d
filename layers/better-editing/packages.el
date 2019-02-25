@@ -23,10 +23,11 @@
         whole-line-or-region
         yasnippet-snippets
         server
-        smart-tab
+        ;; smart-tab
         jumplist
         (happie-jump :location local)
         ;; post
+        ivy
         company
         elisp-slime-nav
         imenu
@@ -134,22 +135,22 @@ if only one candidate searched, then quit!"
     (unless (or (not server-socket-dir) (file-exists-p server-socket-dir))
       (make-directory server-socket-dir))))
 
-(defun better-editing/init-smart-tab ()
-  (use-package smart-tab
-    :defer t
-    :diminish smart-tab-mode
-    :init
-    (setq smart-tab-completion-functions-alist nil
-          smart-tab-using-hippie-expand t)
-    (if (configuration-layer/package-usedp 'org)
-        (add-hook 'org-mode-hook 'smart-tab-mode-on))
-    ;; bug in `smart-tab-default', the default keybinding can't be `smart-tab'
-    ;; avoid infinite looping, can't use `bind*'. use `add-hook' to turn on.
-    :bind ("<tab>" . smart-tab)
-    :config
-    (setq smart-tab-disabled-major-modes
-          (remove 'org-mode smart-tab-disabled-major-modes)) ; org-mode: yasnippet
-    (global-smart-tab-mode 1)))
+;; (defun better-editing/init-smart-tab ()
+;;   (use-package smart-tab
+;;     :defer t
+;;     :diminish smart-tab-mode
+;;     :init
+;;     (setq smart-tab-completion-functions-alist nil
+;;           smart-tab-using-hippie-expand t)
+;;     (if (configuration-layer/package-usedp 'org)
+;;         (add-hook 'org-mode-hook 'smart-tab-mode-on))
+;;     ;; bug in `smart-tab-default', the default keybinding can't be `smart-tab'
+;;     ;; avoid infinite looping, can't use `bind*'. use `add-hook' to turn on.
+;;     :bind ("<tab>" . smart-tab)
+;;     :config
+;;     (setq smart-tab-disabled-major-modes
+;;           (remove 'org-mode smart-tab-disabled-major-modes)) ; org-mode: yasnippet
+;;     (global-smart-tab-mode 1)))
 
 (defun better-editing/init-jumplist ()
   (use-package jumplist
@@ -188,6 +189,21 @@ if only one candidate searched, then quit!"
       (bind-key* "M-," 'jumplist-previous))))
 
 ;; post
+
+(defun better-editing/post-init-ivy ()
+  (with-eval-after-load 'ivy
+    (define-key counsel-find-file-map (kbd "C-l") 'counsel-up-directory)
+    (define-key counsel-find-file-map (kbd "C-j") 'ivy-alt-done)
+    (defun better-editing//swiper-region-or-symbol ()
+      "Call `swiper' with default input."
+      (interactive)
+      (swiper (if (region-active-p)
+                  (buffer-substring-no-properties (region-beginning)
+                                                  (region-end))
+                (let ((thing (thing-at-point 'symbol t)))
+                  (if thing thing "")))))
+    (global-set-key (kbd "M-i") 'better-editing//swiper-region-or-symbol)
+    ))
 
 (defun better-editing/post-init-winum ()
   (better-editing/defadvice-commands
