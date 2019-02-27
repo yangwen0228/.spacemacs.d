@@ -346,7 +346,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (setq gc-cons-threshold 400000000)
+  (setq gc-cons-threshold 400000000
+        gc-cons-percentage 0.6)
   (setq-default configuration-layer--elpa-archives
                 '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                   ("melpa" . "http://elpa.emacs-china.org/melpa/")
@@ -363,7 +364,8 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq gc-cons-threshold 20000000))
+  (setq gc-cons-threshold 20000000
+        gc-cons-percentage 0.1))
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)

@@ -11,10 +11,15 @@
 
 (configuration-layer/declare-layers
  '(
+   ;;; feature
    better-editing
+   ;;; app
    cnblogs
+   ;;; tools
    exec-path
-   ui
-   vue
    web-tool
+   ;;; ui
+   font
+   ;;; lang
+   vue
    ))

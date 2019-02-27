@@ -1,4 +1,4 @@
-;;; packages.el --- ui layer packages file for Spacemacs.
+;;; packages.el --- font layer packages file for Spacemacs.
 ;;
 ;; Copyright (c) 2018 WEN YANG & Contributors
 ;;
@@ -15,7 +15,7 @@
 
 ;;; Code:
 
-(setq ui-packages
+(setq font-packages
       '())
 
 ;; {%org-mode%}

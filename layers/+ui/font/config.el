@@ -11,11 +11,6 @@
 
 
 ;; ui
-(setq  display-line-numbers-width 3
-       bidi-display-reordering nil ; disable bidirectional text for tiny performance boost
-       blink-matching-paren nil    ; don't blink--too distracting
-       )
-
 (defvar ui-default-english-font-size nil
   "Default English font size.
 

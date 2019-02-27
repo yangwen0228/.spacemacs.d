@@ -1,4 +1,4 @@
-;;; keybindings.el --- ui layer keybindings file for Spacemacs.
+;;; keybindings.el --- font layer keybindings file for Spacemacs.
 ;;
 ;; Copyright (c) 2018 WEN YANG & Contributors
 ;;
