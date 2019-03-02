@@ -193,6 +193,7 @@ if only one candidate searched, then quit!"
 (defun better-editing/post-init-ivy ()
   (with-eval-after-load 'ivy
     (define-key counsel-find-file-map (kbd "C-l") 'counsel-up-directory)
+    (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
     (define-key counsel-find-file-map (kbd "C-j") 'ivy-alt-done)
     (defun better-editing//swiper-region-or-symbol ()
       "Call `swiper' with default input."
